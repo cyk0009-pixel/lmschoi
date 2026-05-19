@@ -633,34 +633,35 @@ async function completeCurrentPeriodAndSync() {
   currentStudent.p[currentPeriod - 1] = true;
   document.getElementById('step-' + currentPeriod).classList.add('done');
 
-  // 교시별 이수 여부를 함께 전송
-  const statusMap = {1: '1교시 수료', 2: '2교시 수료', 3: '3교시 수료'};
-  const payload = {
+  // ✅ update_period: 교시 이수 + 전체 상태를 서버에서 함께 처리
+  const res = await sheetsCall({
     action: 'update_period',
-    name: currentStudent.name,
-    birth: currentStudent.birth,
-    period: currentPeriod,           // 완료된 교시 번호 (1, 2, 3)
-    status: statusMap[currentPeriod]
-  };
-  const res = await sheetsCall(payload);
-  if (!res || !res.ok) showToast('구글 시트 저장 지연. 네트워크 상태를 확인하세요.');
-  
-  const allDone = currentStudent.p[0] && currentStudent.p[1] && currentStudent.p[2];
-  
-  if (allDone) {
-     await syncStatus('교육수료');
-     document.getElementById('btn-submit-result').style.display = 'inline-block';
-  } else {
-     let nextP = currentPeriod;
-     for(let i=1; i<=3; i++) {
-         if(!currentStudent.p[i-1]) { nextP = i; break; }
-     }
-     const nb = document.getElementById('btn-next-period');
-     nb.style.display = 'inline-block';
-     nb.textContent = nextP + '교시 이동 →';
-     nb.onclick = () => selectPeriod(nextP);
+    name:   currentStudent.name,
+    birth:  currentStudent.birth,
+    period: currentPeriod
+  });
+
+  if (!res || !res.ok) {
+    showToast('구글 시트 저장 지연. 네트워크 상태를 확인하세요.');
   }
-  
+
+  const allDone = currentStudent.p[0] && currentStudent.p[1] && currentStudent.p[2];
+
+  if (allDone) {
+    currentStudent.completed = true;
+    updateBadge();
+    document.getElementById('btn-submit-result').style.display = 'inline-block';
+  } else {
+    let nextP = currentPeriod;
+    for (let i = 1; i <= 3; i++) {
+      if (!currentStudent.p[i - 1]) { nextP = i; break; }
+    }
+    const nb = document.getElementById('btn-next-period');
+    nb.style.display = 'inline-block';
+    nb.textContent = nextP + '교시 이동 →';
+    nb.onclick = () => selectPeriod(nextP);
+  }
+
   document.querySelectorAll('.step').forEach(el => el.style.pointerEvents = 'auto');
   document.getElementById('timer-text').textContent = '데이터 저장 완료 ✓';
 }
