@@ -632,9 +632,18 @@ async function completeCurrentPeriodAndSync() {
   currentStudent.p = currentStudent.p || [false, false, false];
   currentStudent.p[currentPeriod - 1] = true;
   document.getElementById('step-' + currentPeriod).classList.add('done');
-  
+
+  // 교시별 이수 여부를 함께 전송
   const statusMap = {1: '1교시 수료', 2: '2교시 수료', 3: '3교시 수료'};
-  await syncStatus(statusMap[currentPeriod]);
+  const payload = {
+    action: 'update_period',
+    name: currentStudent.name,
+    birth: currentStudent.birth,
+    period: currentPeriod,           // 완료된 교시 번호 (1, 2, 3)
+    status: statusMap[currentPeriod]
+  };
+  const res = await sheetsCall(payload);
+  if (!res || !res.ok) showToast('구글 시트 저장 지연. 네트워크 상태를 확인하세요.');
   
   const allDone = currentStudent.p[0] && currentStudent.p[1] && currentStudent.p[2];
   
