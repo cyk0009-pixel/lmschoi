@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국노인복지진흥원 온라인교육플랫폼</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  :root {
+    --navy:#1a2744; --navy-mid:#243358; --gold:#c9a84c; --gold-light:#e4c476;
+    --cream:#f8f5ef; --cream-dark:#ede9e0; --text-dark:#1a1a2e; --text-mid:#3a3a55;
+    --text-light:#7a7a9a; --white:#ffffff; --red:#c0392b; --green:#1e7e34;
+    --shadow:0 4px 24px rgba(26,39,68,0.12); --shadow-lg:0 8px 40px rgba(26,39,68,0.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--text-dark);min-height:100vh;}
+
+  /* HEADER */
+  header{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 40px;height:72px;
+    display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-lg);}
+  .header-logo{display:flex;align-items:center;gap:14px;cursor:pointer;}
+  .logo-emblem{width:44px;height:44px;background:var(--gold);border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;color:var(--navy);flex-shrink:0;}
+  .logo-text{display:flex;flex-direction:column;}
+  .logo-text .org{font-size:11px;color:var(--gold-light);letter-spacing:.05em;font-weight:300;}
+  .logo-text .name{font-size:15px;color:var(--white);font-weight:700;letter-spacing:-.02em;font-family:'Noto Serif KR',serif;}
+  .header-right{display:flex;gap:10px;align-items:center;}
+  .btn-hdr{background:transparent;border:1.5px solid var(--gold);color:var(--gold);padding:8px 16px;border-radius:4px;
+    cursor:pointer;font-size:13px;font-family:'Noto Sans KR',sans-serif;font-weight:500;transition:all .2s;white-space:nowrap;}
+  .btn-hdr:hover{background:var(--gold);color:var(--navy);}
+  .btn-hdr.home{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.85);}
+  .btn-hdr.home:hover{background:rgba(255,255,255,.15);color:#fff;border-color:#fff;}
+
+  /* PAGES */
+  .page{display:none;animation:fadeIn .35s ease;} .page.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  /* HERO */
+  .hero-band{background:var(--navy-mid);color:#fff;text-align:center;padding:44px 20px 36px;border-bottom:2px solid var(--gold);}
+  .hero-band .sub{font-size:12px;letter-spacing:.15em;color:var(--gold-light);margin-bottom:10px;text-transform:uppercase;}
+  .hero-band h1{font-family:'Noto Serif KR',serif;font-size:24px;font-weight:700;letter-spacing:-.02em;}
+  .hero-band p{font-size:13px;color:#aab4cc;margin-top:8px;}
+
+  /* CARD */
+  .card{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:36px 40px;max-width:600px;margin:40px auto;}
+  .card h2{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .card-desc{font-size:13px;color:var(--text-light);margin-bottom:28px;line-height:1.6;}
+  .form-row{margin-bottom:18px;}
+  .form-row label{display:block;font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:.02em;}
+  .form-row label span{color:var(--red);}
+  .form-row input,.form-row select{width:100%;padding:11px 14px;border:1.5px solid #d8d4ca;border-radius:6px;
+    font-size:14px;font-family:'Noto Sans KR',sans-serif;color:var(--text-dark);background:var(--cream);transition:border-color .2s;outline:none;}
+  .form-row input:focus,.form-row select:focus{border-color:var(--navy);background:#fff;}
+  .form-row select{appearance:none;cursor:pointer;}
+
+  .btn-primary{width:100%;background:var(--navy);color:#fff;border:none;padding:14px;border-radius:6px;
+    font-size:15px;font-family:'Noto Sans KR',sans-serif;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;
+    letter-spacing:.03em;margin-top:8px;}
+  .btn-primary:hover{background:var(--navy-mid);} .btn-primary:active{transform:scale(.99);}
+  .btn-primary:disabled{opacity:.6;cursor:not-allowed;}
+  .btn-gold{background:var(--gold);color:var(--navy);border:none;padding:13px 28px;border-radius:6px;
+    font-size:14px;font-family:'Noto Sans KR',sans-serif;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-gold:hover{background:var(--gold-light);}
+  .btn-outline{background:transparent;color:var(--navy);border:1.5px solid var(--navy);padding:12px 24px;
+    border-radius:6px;font-size:14px;font-family:'Noto Sans KR',sans-serif;font-weight:500;cursor:pointer;transition:all .2s;}
+  .btn-outline:hover{background:var(--navy);color:#fff;}
+
+  /* COURSE */
+  .course-grid{max-width:900px;margin:40px auto;padding:0 24px;}
+  .course-grid h2{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .course-grid .section-desc{font-size:13px;color:var(--text-light);margin-bottom:28px;}
+  .course-items{display:flex;flex-direction:column;gap:16px;}
+  .course-item{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:24px 28px;
+    display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+    border:2px solid transparent;transition:border-color .2s,box-shadow .2s;}
+  .course-item:hover{border-color:var(--gold);box-shadow:var(--shadow-lg);}
+  .course-item-left{display:flex;align-items:center;gap:18px;}
+  .course-num{width:48px;height:48px;background:var(--navy);border-radius:50%;display:flex;align-items:center;
+    justify-content:center;color:var(--gold);font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;flex-shrink:0;}
+  .course-info h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+  .course-info p{font-size:12.5px;color:var(--text-light);}
+  .course-badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:700;letter-spacing:.04em;}
+  .badge-wait{background:#e8eaf6;color:#3949ab;} .badge-done{background:#e8f5e9;color:var(--green);}
+
+  /* PASSWORD */
+  .pw-wrap{max-width:420px;margin:80px auto;padding:0 24px;text-align:center;}
+  .lock-icon{width:64px;height:64px;background:var(--navy);border-radius:50%;display:flex;align-items:center;
+    justify-content:center;margin:0 auto 24px;font-size:28px;}
+  .pw-wrap h2{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .pw-wrap p{font-size:13px;color:var(--text-light);margin-bottom:28px;}
+
+  /* LECTURE */
+  .lecture-wrap{max-width:960px;margin:0 auto;padding:30px 24px 60px;}
+  .lecture-header{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:20px 28px;margin-bottom:24px;
+    display:flex;align-items:center;justify-content:space-between;}
+  .lecture-header h2{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;color:var(--navy);}
+  .lecture-header .student-info{font-size:12.5px;color:var(--text-light);}
+  .progress-steps{display:flex;background:#fff;border-radius:10px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px;}
+  .step{flex:1;text-align:center;padding:14px 10px;font-size:13px;font-weight:700;color:var(--text-light);
+    border-right:1px solid var(--cream-dark);transition:all .3s;}
+  .step:last-child{border-right:none;} .step.active{background:var(--navy);color:var(--gold);}
+  .step.done{background:var(--green);color:#fff;}
+  .step .step-num{font-size:10px;display:block;margin-bottom:2px;opacity:.7;}
+  .video-container{background:#000;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:16/9;
+    box-shadow:var(--shadow-lg);margin-bottom:24px;}
+  .video-container iframe{width:100%;height:100%;border:none;}
+  .video-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:10;background:transparent;
+    user-select:none;-webkit-user-select:none;}
+  .video-controls{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:var(--shadow);
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  .timer-display{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-mid);}
+  .timer-bar-wrap{width:180px;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden;}
+  .timer-bar{height:100%;background:var(--gold);border-radius:3px;transition:width 1s linear;}
+
+  /* ADMIN MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(26,39,68,.7);backdrop-filter:blur(4px);
+    z-index:200;align-items:center;justify-content:center;}
+  .modal-bg.open{display:flex;}
+  .modal{background:#fff;border-radius:12px;padding:40px 44px;width:420px;box-shadow:var(--shadow-lg);
+    position:relative;animation:modalIn .25s ease;}
+  @keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
+  .modal-close{position:absolute;top:16px;right:18px;background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-light);}
+  .modal h2{font-family:'Noto Serif KR',serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .modal .modal-sub{font-size:12.5px;color:var(--text-light);margin-bottom:28px;}
+  .error-msg{color:var(--red);font-size:12.5px;margin-top:8px;display:none;}
+
+  /* ADMIN PAGE */
+  .admin-wrap{max-width:1200px;margin:0 auto;padding:30px 24px 60px;}
+  .admin-top{background:var(--navy);border-radius:10px;padding:20px 28px;display:flex;align-items:center;
+    justify-content:space-between;margin-bottom:28px;}
+  .admin-top h2{font-family:'Noto Serif KR',serif;font-size:18px;color:#fff;font-weight:700;}
+  .admin-top .sub-txt{font-size:12px;color:var(--gold-light);}
+  .admin-top-btns{display:flex;gap:10px;}
+  .admin-tabs{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{padding:10px 20px;border-radius:6px;border:1.5px solid var(--cream-dark);background:#fff;
+    color:var(--text-mid);font-family:'Noto Sans KR',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;transition:all .2s;}
+  .tab-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+  .tab-btn:hover:not(.active){border-color:var(--navy);color:var(--navy);}
+  .admin-panel{display:none;} .admin-panel.active{display:block;}
+  .table-wrap{background:#fff;border-radius:10px;box-shadow:var(--shadow);overflow:hidden;}
+  .table-toolbar{padding:16px 20px;border-bottom:1px solid var(--cream-dark);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .table-toolbar h3{font-size:14.5px;font-weight:700;color:var(--navy);}
+  .tb-right{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text-light);}
+  table{width:100%;border-collapse:collapse;}
+  thead{background:var(--cream);}
+  th{padding:12px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.04em;border-bottom:1px solid var(--cream-dark);}
+  td{padding:12px 14px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--cream-dark);}
+  tr:last-child td{border-bottom:none;} tr:hover td{background:var(--cream);}
+  .status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700;}
+  .pill-wait{background:#fff3cd;color:#856404;} .pill-done{background:#d1e7dd;color:#0f5132;}
+  .lm-card{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:24px 28px;margin-bottom:20px;}
+  .lm-card h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .lm-num{background:var(--navy);color:var(--gold);width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+  .lm-row{display:flex;gap:10px;align-items:center;margin-bottom:6px;}
+  .lm-row input{flex:1;padding:10px 14px;border:1.5px solid #d8d4ca;border-radius:6px;
+    font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--text-dark);outline:none;}
+  .lm-row input:focus{border-color:var(--navy);}
+  .lm-preview{font-size:12px;color:var(--text-light);word-break:break-all;margin-bottom:14px;}
+  .lm-preview a{color:var(--navy);}
+
+  /* COMPLETE */
+  .completion-wrap{max-width:560px;margin:80px auto;padding:0 24px;text-align:center;}
+  .completion-icon{width:80px;height:80px;background:var(--green);border-radius:50%;display:flex;align-items:center;
+    justify-content:center;margin:0 auto 28px;font-size:36px;box-shadow:0 4px 20px rgba(30,126,52,.25);}
+  .completion-wrap h2{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:16px;}
+  .comp-msg{background:#fff;border-radius:10px;padding:24px 28px;box-shadow:var(--shadow);
+    font-size:14px;color:var(--text-mid);line-height:1.9;text-align:left;}
+  .comp-msg a{color:var(--navy);font-weight:700;}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:30px;right:30px;background:var(--navy);color:#fff;padding:14px 22px;
+    border-radius:8px;font-size:13.5px;font-weight:500;box-shadow:var(--shadow-lg);display:none;z-index:300;}
+  .toast.show{display:block;}
+
+  .info-note{background:#eef2ff;border-left:4px solid var(--navy);padding:12px 16px;
+    border-radius:0 6px 6px 0;font-size:12.5px;color:var(--text-mid);margin-top:20px;line-height:1.7;}
+
+  /* Sheets setup */
+  .sheets-guide{background:#f0f9ff;border:1.5px solid #bee3f8;border-radius:10px;padding:24px 28px;margin-bottom:20px;}
+  .sheets-guide h3{font-size:15px;font-weight:700;color:#1a56db;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .sheets-guide ol{font-size:13px;color:#374151;line-height:2.1;margin-left:20px;margin-bottom:16px;}
+  .sheets-guide ol li a{color:#1a56db;}
+  .code-block{background:#1e1e2e;border-radius:8px;padding:16px;overflow-x:auto;margin-bottom:16px;}
+  .code-block pre{color:#a9dc76;font-size:11.5px;font-family:'Courier New',monospace;white-space:pre;line-height:1.7;}
+  .url-status{margin-top:8px;font-size:12px;color:var(--text-light);}
+
+  @media(max-width:600px){
+    header{padding:10px 12px;height:auto;}
+    .logo-text .name{font-size:12px;} .logo-text .org{font-size:10px;}
+    .card{padding:20px 14px;margin:14px 8px;}
+    .course-grid{padding:0 8px;margin:14px auto;}
+    .lecture-wrap{padding:10px 8px 40px;}
+    .timer-bar-wrap{width:100px;}
+    .admin-wrap{padding:10px 8px 40px;}
+    th,td{padding:8px 6px;font-size:11px;}
+    .modal{width:calc(100vw - 20px);padding:22px 14px;}
+    .video-controls{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo" onclick="goHome()">
+    <div class="logo-emblem">복</div>
+    <div class="logo-text">
+      <span class="org">한국노인복지중앙회 부설</span>
+      <span class="name">한국노인복지진흥원 온라인교육플랫폼</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="btn-hdr home" id="btn-go-home" onclick="goHome()" style="display:none">🏠 홈으로</button>
+    <button class="btn-hdr" onclick="openAdminLogin()">관리자 페이지</button>
+  </div>
+</header>
+
+<div id="page-register" class="page active">
+  <div class="hero-band">
+    <div class="sub">Korea Senior Welfare Promotion Institute · LMS</div>
+    <h1>온라인 교육 수강신청</h1>
+    <p>아래 정보를 정확히 입력하신 후 교육과정을 수강하실 수 있습니다.</p>
+  </div>
+  <div class="card">
+    <h2>수강생 정보 입력</h2>
+    <p class="card-desc">모든 항목(<span style="color:var(--red)">*</span>)은 필수 입력 사항입니다.</p>
+    <div class="form-row"><label>시설명 <span>*</span></label><input type="text" id="reg-facility" placeholder="소속 시설명"></div>
+    <div class="form-row">
+      <label>지역 <span>*</span></label>
+      <select id="reg-region">
+        <option value="">-- 지역 선택 --</option>
+        <option>서울</option><option>부산</option><option>대구</option><option>인천</option>
+        <option>광주</option><option>대전</option><option>울산</option><option>세종</option>
+        <option>경기</option><option>충북</option><option>충남</option><option>전북</option>
+        <option>전남</option><option>경북</option><option>경남</option><option>강원</option><option>제주</option>
+      </select>
+    </div>
+    <div class="form-row"><label>성명 <span>*</span></label><input type="text" id="reg-name" placeholder="성명"></div>
+    <div class="form-row"><label>생년월일 <span>*</span></label><input type="date" id="reg-birth"></div>
+    <div class="form-row"><label>직위 <span>*</span></label><input type="text" id="reg-position" placeholder="예: 사회복지사, 요양보호사"></div>
+    <div class="info-note">
+      ※ 입력하신 정보는 교육 수료증 발급 및 관리 목적으로 수집·이용됩니다.<br>
+      ※ 수료증은 한국노인복지중앙회 홈페이지(https://www.elder.or.kr/)에서 출력 가능합니다.
+    </div>
+    <button class="btn-primary" id="btn-register" onclick="submitRegister()" style="margin-top:24px">다음 → 교육과정 보기</button>
+  </div>
+</div>
+
+<div id="page-courses" class="page">
+  <div class="hero-band">
+    <div class="sub">Education Curriculum</div>
+    <h1>교육과정 목록</h1>
+    <p id="course-greeting"></p>
+  </div>
+  <div class="course-grid">
+    <h2>수강 가능한 교육과정</h2>
+    <p class="section-desc">교육과정을 클릭하여 수강을 시작하세요. 교육과정 접근 시 암호 인증이 필요합니다.</p>
+    <div class="course-items">
+      <div class="course-item" onclick="openCourse()">
+        <div class="course-item-left">
+          <div class="course-num">1</div>
+          <div class="course-info">
+            <h3>2026년 양로시설 요양보호사 전문교육</h3>
+            <p>총 3교시 · 온라인 영상 강의 · 수료 후 수료증 발급</p>
+          </div>
+        </div>
+        <span id="course-badge-0" class="course-badge badge-wait">수강대기</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-password" class="page">
+  <div class="pw-wrap">
+    <div class="lock-icon">🔐</div>
+    <h2>교육과정 접근 인증</h2>
+    <p>교육 담당자로부터 안내받은 암호를 입력해주세요.</p>
+    <div class="form-row">
+      <input type="password" id="pw-input" placeholder="암호 입력" maxlength="10"
+        style="text-align:center;font-size:22px;letter-spacing:8px;">
+    </div>
+    <div class="error-msg" id="pw-error">암호가 올바르지 않습니다.</div>
+    <button class="btn-primary" style="margin-top:10px" onclick="checkPassword()">확인</button>
+    <br><br>
+    <button class="btn-outline" onclick="showPage('page-courses')">← 목록으로</button>
+  </div>
+</div>
+
+<div id="page-lecture" class="page">
+  <div class="lecture-wrap">
+    <div class="lecture-header">
+      <div>
+        <h2>2026년 양로시설 요양보호사 전문교육</h2>
+        <div class="student-info" id="lecture-student-info"></div>
+      </div>
+      <button class="btn-outline" onclick="showPage('page-courses')">목록으로</button>
+    </div>
+    <div class="progress-steps">
+      <div class="step active" id="step-1"><span class="step-num">STEP 1</span>1교시</div>
+      <div class="step" id="step-2"><span class="step-num">STEP 2</span>2교시</div>
+      <div class="step" id="step-3"><span class="step-num">STEP 3</span>3교시</div>
+    </div>
+    <div class="video-container">
+      <iframe id="lecture-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="video-overlay" id="video-overlay" oncontextmenu="return false;" ondragstart="return false;"></div>
+    </div>
+    <div class="video-controls">
+      <div class="timer-display">
+        <span id="lec-period-lbl" style="font-weight:700;color:var(--navy);white-space:nowrap">1교시</span>
+        <div class="timer-bar-wrap"><div class="timer-bar" id="timer-bar" style="width:0%"></div></div>
+        <span id="timer-text">강의 수강 중...</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <span id="period-status" style="font-size:12px;color:var(--text-light)">영상을 끝까지 시청해주세요</span>
+        <button class="btn-gold" id="btn-next-period" onclick="nextPeriod()" style="display:none">다음 교시 →</button>
+        <button class="btn-primary" id="btn-submit-result" onclick="submitResult()"
+          style="display:none;width:auto;padding:13px 24px;">교육결과 제출 ✓</button>
+      </div>
+    </div>
+    <div class="info-note" style="margin-top:20px">
+      ※ 강의 영상은 순서대로 끝까지 시청하셔야 수료 처리됩니다.<br>
+      ※ 영상 조작(건너뛰기 등)은 제한되며, 수강 도중 이탈 시 처음부터 다시 시청하셔야 합니다.
+    </div>
+  </div>
+</div>
+
+<div id="page-complete" class="page">
+  <div class="completion-wrap">
+    <div class="completion-icon">✓</div>
+    <h2>교육 수료 완료</h2>
+    <div class="comp-msg">
+      감사합니다. 교육이 수료되었습니다.<br><br>
+      교육 수료증 및 영수증은 교육을 신청하신 중앙회 홈페이지<br>
+      <a href="https://www.elder.or.kr/" target="_blank">https://www.elder.or.kr/</a> 에서 출력가능합니다.<br><br>
+      ○ 문의: 043-236-6001
+    </div>
+    <br>
+    <button class="btn-outline" onclick="showPage('page-courses')" style="width:100%">교육과정 목록으로 돌아가기</button>
+  </div>
+</div>
+
+<div id="page-admin" class="page">
+  <div class="admin-wrap">
+    <div class="admin-top">
+      <div>
+        <h2>관리자 대시보드</h2>
+        <span class="sub-txt">한국노인복지진흥원 온라인교육플랫폼</span>
+      </div>
+      <div class="admin-top-btns">
+        <button class="btn-hdr home" onclick="goHomeFromAdmin()">🏠 홈으로</button>
+        <button class="btn-hdr" onclick="adminLogout()">로그아웃</button>
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-students')">수강생 명단</button>
+      <button class="tab-btn" onclick="switchTab('tab-lectures')">강의 관리 · Sheets 설정</button>
+    </div>
+
+    <div id="tab-students" class="admin-panel active">
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <h3>수강신청자 명단</h3>
+          <div class="tb-right">
+            <span id="admin-count">총 0명</span>
+            <button class="btn-gold" onclick="refreshFromSheets()" style="padding:6px 14px;font-size:12px;">🔄 Sheets 새로고침</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th><th>시설명</th><th>지역</th><th>성명</th>
+                <th>생년월일</th><th>직위</th><th>신청일시</th><th>수료여부</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tbody">
+              <tr><td colspan="8" style="text-align:center;color:var(--text-light);padding:30px">수강신청 내역이 없습니다.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-lectures" class="admin-panel">
+
+      <div class="sheets-guide">
+        <h3>📊 Google Sheets 자동 연동 설정</h3>
+        <p style="font-size:13px;color:#374151;margin-bottom:14px;line-height:1.8;">
+          아래 순서대로 설정하면 수강신청 · 수료 정보가 구글 스프레드시트에 자동으로 저장됩니다. 최초 1회만 설정하면 됩니다.
+        </p>
+        <ol>
+          <li>구글 스프레드시트 <a href="https://docs.google.com/spreadsheets/d/1WZc6VnTsGranw5jBmHpTpj0jfB-D3qU3iUvi1WvtpWg/edit" target="_blank">▶ 열기</a></li>
+          <li>상단 메뉴 [확장 프로그램] → [Apps Script] 클릭</li>
+          <li>기존 코드를 지우고 아래 코드를 전체 붙여넣기 후 <kbd>Ctrl+S</kbd> 저장</li>
+          <li>상단 [배포] → [새 배포] 클릭 → 유형: 웹앱 선택</li>
+          <li>실행 계정: 나 / 액세스 권한: 모든 사용자 → [배포]</li>
+          <li>구글 계정 권한 허용 후, 생성된 웹앱 URL을 아래에 붙여넣기</li>
+        </ol>
+        <div class="code-block">
+          <pre>const SHEET_ID = '1WZc6VnTsGranw5jBmHpTpj0jfB-D3qU3iUvi1WvtpWg';
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    let sheet = ss.getSheetByName('수강생명단');
+    if (!sheet) {
+      sheet = ss.insertSheet('수강생명단');
+      const hdr = sheet.getRange(1,1,1,8);
+      sheet.appendRow(['No','시설명','지역','성명','생년월일','직위','신청일시','수료여부']);
+      sheet.getRange(1,1,1,8).setFontWeight('bold')
+        .setBackground('#1a2744').setFontColor('#ffffff');
+    }
+    if (data.action === 'register') {
+      const no = sheet.getLastRow(); // 헤더 포함 행수 = 순번
+      sheet.appendRow([no, data.facility, data.region, data.name,
+                       data.birth, data.position, data.registeredAt, '수강대기']);
+      return out({ok:true, row: sheet.getLastRow()});
+    }
+    if (data.action === 'complete') {
+      const rows = sheet.getDataRange().getValues();
+      for (let i = 1; i &lt; rows.length; i++) {
+        if (rows[i][3] == data.name && rows[i][4] == data.birth) {
+          sheet.getRange(i+1,8).setValue('교육수료')
+            .setBackground('#d1e7dd').setFontColor('#0f5132').setFontWeight('bold');
+          return out({ok:true});
+        }
+      }
+      return out({ok:false, msg:'행 없음'});
+    }
+    if (data.action === 'list') {
+      const rows = sheet.getDataRange().getValues();
+      return out({ok:true, rows: rows.slice(1)});
+    }
+    return out({ok:false});
+  } catch(err) {
+    return out({ok:false, err: err.toString()});
+  }
+}
+
+function out(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) { return doPost(e); }</pre>
+        </div>
+        <div class="lm-row">
+          <input type="text" id="sheets-url-input" placeholder="https://script.google.com/macros/s/.../exec">
+          <button class="btn-gold" onclick="saveSheetUrl()" style="white-space:nowrap;padding:10px 16px;font-size:13px;">저장</button>
+        </div>
+        <div id="sheets-url-status" class="url-status"></div>
+      </div>
+
+      <div class="lm-card">
+        <h3><span class="lm-num">1</span>2026년 양로시설 요양보호사 전문교육 — 강의 링크 관리</h3>
+        <div id="lecture-links-wrap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-admin-login" class="modal-bg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-admin-login')">✕</button>
+    <h2>관리자 로그인</h2>
+    <p class="modal-sub">관리자 전용 페이지입니다.</p>
+    <div class="form-row"><label>아이디</label><input type="text" id="admin-id-input" placeholder="아이디"></div>
+    <div class="form-row">
+      <label>비밀번호</label>
+      <input type="password" id="admin-pw-input" placeholder="비밀번호" onkeydown="if(event.key==='Enter')adminLogin()">
+    </div>
+    <div class="error-msg" id="admin-login-error">아이디 또는 비밀번호가 올바르지 않습니다.</div>
+    <div style="margin-top:20px;"><button class="btn-primary" onclick="adminLogin()" style="margin-top:0">로그인</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──
+const ADMIN_ID = 'admin', ADMIN_PW = 'admin', COURSE_PW = '9763';
+const WATCH_SEC = 30; // ← 테스트용 30초. 실 서비스에서는 영상 길이(초)로 변경
+
+let lectureLinks = [
+  'https://www.youtube-nocookie.com/embed/Qoelwh7n6F4',
+  'https://youtu.be/K7zCJj1geYo?si=nNSteG2akxFpJfV2',
+  'https://youtu.be/zIeaZBxSy98?si=RMeUl1TZ_Auwx05m'
+];
+let SHEETS_URL = '';
+let localStudents = [];
+let currentStudent = null;
+let currentPeriod = 1;
+let timerInterval = null, timerCount = 0;
+let isAdminLoggedIn = false;
+
+// ── PERSIST ──
+(function load() {
+  try {
+    const l = localStorage.getItem('lms_links'); if(l) lectureLinks = JSON.parse(l);
+    const u = localStorage.getItem('lms_sheets_url'); if(u) SHEETS_URL = u;
+    const s = localStorage.getItem('lms_local'); if(s) localStudents = JSON.parse(s);
+  } catch(e){}
+})();
+function persist() {
+  try {
+    localStorage.setItem('lms_links', JSON.stringify(lectureLinks));
+    localStorage.setItem('lms_sheets_url', SHEETS_URL);
+    localStorage.setItem('lms_local', JSON.stringify(localStudents));
+  } catch(e){}
+}
+
+// ── NAV ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  const hb = document.getElementById('btn-go-home');
+  hb.style.display = (id !== 'page-register' && id !== 'page-admin') ? 'inline-block' : 'none';
+}
+function goHome() { clearInterval(timerInterval); showPage('page-register'); }
+function goHomeFromAdmin() { isAdminLoggedIn = false; showPage('page-register'); }
+
+// ── SHEETS ──
+async function sheetsCall(payload) {
+  if (!SHEETS_URL) return null;
+  try {
+    const r = await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain'},
+      body: JSON.stringify(payload)
+    });
+    return await r.json();
+  } catch(e) {
+    // CORS fallback (doGet)
+    try {
+      const r2 = await fetch(SHEETS_URL + '?data=' + encodeURIComponent(JSON.stringify(payload)));
+      return await r2.json();
+    } catch(e2) { return null; }
+  }
+}
+
+// ── REGISTER ──
+async function submitRegister() {
+  const facility = document.getElementById('reg-facility').value.trim();
+  const region   = document.getElementById('reg-region').value;
+  const name     = document.getElementById('reg-name').value.trim();
+  const birth    = document.getElementById('reg-birth').value;
+  const position = document.getElementById('reg-position').value.trim();
+  if (!facility||!region||!name||!birth||!position) { showToast('모든 항목을 입력해주세요.'); return; }
+
+  const btn = document.getElementById('btn-register');
+  btn.disabled = true; btn.textContent = '저장 중...';
+
+  const now = new Date().toLocaleString('ko-KR');
+  currentStudent = { no: Date.now(), facility, region, name, birth, position, registeredAt: now, completed: false };
+  localStudents.push({...currentStudent});
+  persist();
+
+  if (SHEETS_URL) {
+    const res = await sheetsCall({ action:'register', ...currentStudent });
+    if (!res || !res.ok) showToast('⚠ Sheets 저장 실패 (로컬에는 저장됨)');
+  }
+
+  btn.disabled = false; btn.textContent = '다음 → 교육과정 보기';
+  document.getElementById('course-greeting').textContent = `${name}님, 환영합니다. 교육과정을 선택하여 수강을 시작하세요.`;
+  updateBadge();
+  showPage('page-courses');
+}
+
+function updateBadge() {
+  const b = document.getElementById('course-badge-0');
+  if (currentStudent && currentStudent.completed) {
+    b.textContent = '수료완료'; b.className = 'course-badge badge-done';
+  } else {
+    b.textContent = '수강대기'; b.className = 'course-badge badge-wait';
+  }
+}
+
+// ── COURSE ──
+function openCourse() {
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').style.display = 'none';
+  showPage('page-password');
+}
+function checkPassword() {
+  if (document.getElementById('pw-input').value.trim() === COURSE_PW) {
+    document.getElementById('pw-error').style.display = 'none';
+    startLecture();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') checkPassword(); });
+
+// ── LECTURE ──
+function startLecture() {
+  currentPeriod = 1;
+  if (currentStudent)
+    document.getElementById('lecture-student-info').textContent =
+      `${currentStudent.name} · ${currentStudent.facility} · ${currentStudent.position}`;
+  loadPeriod();
+  showPage('page-lecture');
+}
+
+function loadPeriod() {
+  for (let i=1;i<=3;i++) {
+    const el = document.getElementById('step-'+i);
+    el.className = 'step';
+    if (i < currentPeriod) el.classList.add('done');
+    else if (i === currentPeriod) el.classList.add('active');
+  }
+  document.getElementById('lec-period-lbl').textContent = currentPeriod + '교시';
+  document.getElementById('btn-next-period').style.display = 'none';
+  document.getElementById('btn-submit-result').style.display = 'none';
+  document.getElementById('period-status').textContent = '영상을 끝까지 시청해주세요';
+  const bar = document.getElementById('timer-bar');
+  bar.style.width = '0%'; bar.style.background = 'var(--gold)';
+  document.getElementById('timer-text').textContent = '강의 수강 중...';
+
+  // Load iframe
+  const url = lectureLinks[currentPeriod-1];
+  document.getElementById('lecture-iframe').src = getEmbed(url) || 'about:blank';
+
+  // Timer
+  clearInterval(timerInterval); timerCount = 0;
+  timerInterval = setInterval(() => {
+    timerCount++;
+    const pct = Math.min(100, timerCount/WATCH_SEC*100);
+    bar.style.width = pct + '%';
+    const rem = WATCH_SEC - timerCount;
+    if (rem > 0) {
+      document.getElementById('timer-text').textContent = `완료까지 약 ${rem}초`;
+    } else {
+      clearInterval(timerInterval);
+      bar.style.width = '100%'; bar.style.background = 'var(--green)';
+      document.getElementById('timer-text').textContent = '시청 완료 ✓';
+      document.getElementById('period-status').textContent = `${currentPeriod}교시 완료!`;
+      if (currentPeriod < 3) {
+        const nb = document.getElementById('btn-next-period');
+        nb.style.display = 'inline-block';
+        nb.textContent = (currentPeriod+1) + '교시로 이동 →';
+      } else {
+        document.getElementById('btn-submit-result').style.display = 'inline-block';
+      }
+    }
+  }, 1000);
+}
+
+function getEmbed(url) {
+  if (!url) return '';
+  let id = '';
+  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+  if (m) id = m[1];
+  return id ? `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&disablekb=1&modestbranding=1&rel=0&fs=0&iv_load_policy=3&playsinline=1` : '';
+}
+
+function nextPeriod() { if(currentPeriod<3){ currentPeriod++; loadPeriod(); } }
+
+async function submitResult() {
+  const btn = document.getElementById('btn-submit-result');
+  btn.disabled = true; btn.textContent = '처리 중...';
+
+  if (currentStudent) {
+    currentStudent.completed = true;
+    const loc = localStudents.find(s => s.no === currentStudent.no);
+    if(loc) { loc.completed = true; persist(); }
+    updateBadge();
+
+    if (SHEETS_URL) {
+      const res = await sheetsCall({ action:'complete', name: currentStudent.name, birth: currentStudent.birth });
+      if (!res || !res.ok) showToast('⚠ Sheets 수료 업데이트 실패');
+    }
+  }
+  clearInterval(timerInterval);
+  showPage('page-complete');
+}
+
+document.getElementById('video-overlay').addEventListener('contextmenu', e => e.preventDefault());
+document.getElementById('video-overlay').addEventListener('mousedown', e => e.preventDefault());
+
+// ── ADMIN ──
+function openAdminLogin() {
+  if (isAdminLoggedIn) { showAdminPage(); return; }
+  document.getElementById('admin-id-input').value = '';
+  document.getElementById('admin-pw-input').value = '';
+  document.getElementById('admin-login-error').style.display = 'none';
+  document.getElementById('modal-admin-login').classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function adminLogin() {
+  const id = document.getElementById('admin-id-input').value.trim();
+  const pw = document.getElementById('admin-pw-input').value.trim();
+  if (id===ADMIN_ID && pw===ADMIN_PW) {
+    isAdminLoggedIn = true;
+    closeModal('modal-admin-login');
+    showAdminPage();
+  } else {
+    document.getElementById('admin-login-error').style.display = 'block';
+  }
+}
+function adminLogout() { isAdminLoggedIn = false; showPage('page-register'); }
+
+function showAdminPage() {
+  document.getElementById('sheets-url-input').value = SHEETS_URL;
+  if (SHEETS_URL) {
+    document.getElementById('sheets-url-status').textContent = '✅ 연동 URL 설정됨';
+    document.getElementById('sheets-url-status').style.color = 'var(--green)';
+  }
+  renderLinksManager();
+  renderLocalTable();
+  document.getElementById('btn-go-home').style.display = 'none';
+  showPage('page-admin');
+  switchTab('tab-students');
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b =>
+    b.classList.toggle('active', b.getAttribute('onclick').includes(id)));
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function saveSheetUrl() {
+  SHEETS_URL = document.getElementById('sheets-url-input').value.trim();
+  persist();
+  const st = document.getElementById('sheets-url-status');
+  if (SHEETS_URL) {
+    st.textContent = '✅ 저장되었습니다. 이제 수강신청 정보가 스프레드시트에 자동 저장됩니다.';
+    st.style.color = 'var(--green)';
+    showToast('Google Sheets 연동 URL이 저장되었습니다.');
+  } else {
+    st.textContent = '⚠ URL이 비어 있습니다.';
+    st.style.color = '#856404';
+  }
+}
+
+function renderLocalTable() {
+  const tbody = document.getElementById('admin-tbody');
+  const list = localStudents.slice().reverse();
+  document.getElementById('admin-count').textContent = '총 ' + localStudents.length + '명';
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-light);padding:30px">수강신청 내역이 없습니다.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map((s,i) => `
+    <tr>
+      <td>${localStudents.length-i}</td>
+      <td>${esc(s.facility)}</td><td>${esc(s.region)}</td>
+      <td><span style="font-weight:700;">${esc(s.name)}</span></td><td>${esc(s.birth)}</td>
+      <td>${esc(s.position)}</td><td>${esc(s.registeredAt)}</td>
+      <td><span class="status-pill ${s.completed?'pill-done':'pill-wait'}">${s.completed?'교육수료':'수강대기'}</span></td>
+    </tr>`).join('');
+}
+
+async function refreshFromSheets() {
+  if (!SHEETS_URL) { showToast('먼저 Sheets URL을 설정해주세요.'); return; }
+  showToast('스프레드시트에서 불러오는 중...');
+  const res = await sheetsCall({ action:'list' });
+  if (res && res.ok && res.rows) {
+    const rows = res.rows;
+    document.getElementById('admin-count').textContent = '총 ' + rows.length + '명 (Sheets 기준)';
+    const tbody = document.getElementById('admin-tbody');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-light);padding:30px">데이터 없음</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map((r,i) => {
+      const done = String(r[7]).includes('수료');
+      return `<tr>
+        <td>${i+1}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td>
+        <td><span style="font-weight:700;">${esc(r[3])}</span></td><td>${esc(r[4])}</td>
+        <td>${esc(r[5])}</td><td>${esc(r[6])}</td>
+        <td><span class="status-pill ${done?'pill-done':'pill-wait'}">${esc(r[7])||'수강대기'}</span></td>
+      </tr>`;
+    }).join('');
+    showToast('스프레드시트 데이터를 불러왔습니다.');
+  } else {
+    showToast('❌ 불러오기 실패. URL과 배포 설정을 확인하세요.');
+  }
+}
+
+function renderLinksManager() {
+  document.getElementById('lecture-links-wrap').innerHTML = [1,2,3].map(p => `
+    <div>
+      <label style="font-size:12.5px;font-weight:700;color:var(--navy);display:block;margin-bottom:6px;">${p}교시 유튜브 링크</label>
+      <div class="lm-row">
+        <input type="text" id="lm-${p-1}" value="${esc(lectureLinks[p-1])}" placeholder="https://youtu.be/...">
+        <button class="btn-gold" onclick="saveLink(${p-1})" style="white-space:nowrap;padding:10px 16px;font-size:13px;">저장</button>
+      </div>
+      <div class="lm-preview" id="lm-prev-${p-1}">
+        ${lectureLinks[p-1]?`링크 설정됨: <a href="${esc(lectureLinks[p-1])}" target="_blank">${esc(lectureLinks[p-1])}</a>`:'링크 미설정'}
+      </div>
+    </div>`).join('');
+}
+
+function saveLink(pi) {
+  const val = document.getElementById('lm-'+pi).value.trim();
+  lectureLinks[pi] = val; persist();
+  document.getElementById('lm-prev-'+pi).innerHTML =
+    val ? `링크 설정됨: <a href="${esc(val)}" target="_blank">${esc(val)}</a>` : '링크 미설정';
+  showToast(`${pi+1}교시 링크가 저장되었습니다.`);
+}
+
+// ── UTILS ──
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+document.getElementById('modal-admin-login').addEventListener('click', function(e){if(e.target===this)closeModal('modal-admin-login');});
+document.getElementById('admin-pw-input').addEventListener('keydown', e=>{if(e.key==='Enter')adminLogin();});
+</script>
+</body>
+</html>
